@@ -8,6 +8,19 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-    - uses: superbrothers/close-pull-request@v3
+    - uses: actions/github-script@v7
       with:
-        comment: 'This is the text to put in a comment'
+        script: |
+          github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: 'yada yada your text goes here',
+          })
+          github.rest.issues.update({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            state: 'closed',
+            state_reason: 'not_planned',
+          })
